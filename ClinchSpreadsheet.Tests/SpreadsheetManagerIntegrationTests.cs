@@ -68,6 +68,28 @@ namespace ClinchSpreadsheet.Tests
             sm.Set("a5", "=a1+a2-30*a3/a4");
             sm.Get("a5").ShouldBe("2.5");
         }
+
+        [Fact]
+        public void Set_Get_FormulaWithOnlyCellValues_UseSubformula()
+        {
+            var sm = new SpreadSheetManager();
+            sm.Set("a1", "20");
+            sm.Set("a2", "=a1-5");
+            sm.Set("a5", "=a1+a2");
+            sm.Get("a5").ShouldBe("35");
+
+            sm.Set("a5", "=a1+a2-30");
+            sm.Get("a5").ShouldBe("5");
+
+            sm.Set("a3", "1");
+            sm.Set("a5", "=a1+a2-30*a3");
+            sm.Get("a5").ShouldBe("5");
+
+            sm.Set("a4", "2");
+            sm.Set("a5", "=a1+a2-30*a3/a4");
+            sm.Get("a5").ShouldBe("2.5");
+        }
+
         [Fact]
         public void Set_Get_DivideByZero()
         {
